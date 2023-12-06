@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      -master
+      - master
 
 
 
@@ -10,15 +10,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-        
 
     steps: 
-      - name: 'testing github action'
-        run: pwd
+      - uses: actions/checkout@v3
 
-      - name: 'testing printing'
-        run: echo donia
+      - name: "Login to Docker Hub"
+        run: docker login --username ${{ secrets.docker_username }} --password ${{ secrets.docker_token }}
 
+      - name: "Building docker image"
+        run: docker build -t ${{ secrets.docker_username }}/my_name .
 
-
-
+      - name: "Pushing to Docker Hub"
+        run: docker push ${{ secrets.docker_username }}/my_name
